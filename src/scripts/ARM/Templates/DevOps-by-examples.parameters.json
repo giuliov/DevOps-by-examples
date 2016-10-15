@@ -1,0 +1,24 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "virtualMachines_devops_by_examples_netcore_name": {
+            "value": "devopbyexvm"
+        },
+        "networkInterfaces_devops_by_examples_n905_name": {
+            "value": "devopbyexnet"
+        },
+        "networkSecurityGroups_devops_by_examples_netcore_nsg_name": {
+            "value": "devopbyexnsg"
+        },
+        "publicIPAddresses_devops_by_examples_netcore_ip_name": {
+            "value": "devopbyexip"
+        },
+        "virtualNetworks_devops_by_examples_vnet_name": {
+            "value": "devopbyexvnet"
+        },
+        "storageAccounts_devopsbyexamplesstorage_name": {
+            "value": "devopbyexstor"
+        }
+    }
+}

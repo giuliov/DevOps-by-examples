@@ -1,0 +1,4 @@
+# automatically normalize line endings.
+* text=auto
+## EXCEPT FOR bash SCRIPTS
+*.sh		text eol=lf
