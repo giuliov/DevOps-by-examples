@@ -1,232 +1,339 @@
 {
-  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    "virtualMachines_devops_by_examples_netcore_ssh_public_key": {
-      "defaultValue": null,
-      "type": "SecureString"
-    },
-    "virtualMachines_devops_by_examples_netcore_adminPassword": {
-      "defaultValue": null,
-      "type": "SecureString"
-    },
-    "virtualMachines_devops_by_examples_netcore_name": {
-      "defaultValue": "devops-by-examples-netcore",
-      "type": "String"
-    },
-    "networkInterfaces_devops_by_examples_n905_name": {
-      "defaultValue": "devops-by-examples-n905",
-      "type": "String"
-    },
-    "networkSecurityGroups_devops_by_examples_netcore_nsg_name": {
-      "defaultValue": "devops-by-examples-netcore-nsg",
-      "type": "String"
-    },
-    "publicIPAddresses_devops_by_examples_netcore_ip_name": {
-      "defaultValue": "devops-by-examples-netcore-ip",
-      "type": "String"
-    },
-    "virtualNetworks_devops_by_examples_vnet_name": {
-      "defaultValue": "devops-by-examples-vnet",
-      "type": "String"
-    },
-    "storageAccounts_devopsbyexamplesstorage_name": {
-      "defaultValue": "devopsbyexamplesstorage",
-      "type": "String"
-    }
-  },
-  "resources": [
-    {
-      "comments": "Generalized from resource: '/subscriptions/9c08dcdd-9dcd-4955-9419-9c1161171463/resourceGroups/devops-by-examples-rg/providers/Microsoft.Compute/virtualMachines/devops-by-examples-netcore'.",
-      "type": "Microsoft.Compute/virtualMachines",
-      "name": "[parameters('virtualMachines_devops_by_examples_netcore_name')]",
-      "apiVersion": "2015-06-15",
-      "location": "westeurope",
-      "properties": {
-        "hardwareProfile": {
-          "vmSize": "Standard_DS1_v2"
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "storageAccounts_default_sku_name": {
+            "type": "string",
+            "defaultValue": "Premium_LRS",
+            "allowedValues": [
+                "Standard_LRS",
+                "Standard_ZRS",
+                "Standard_GRS",
+                "Standard_RAGRS",
+                "Premium_LRS"
+            ]
         },
-        "storageProfile": {
-          "imageReference": {
-            "publisher": "Canonical",
-            "offer": "UbuntuServer",
-            "sku": "16.04.0-LTS",
-            "version": "latest"
-          },
-          "osDisk": {
-            "name": "[parameters('virtualMachines_devops_by_examples_netcore_name')]",
-            "createOption": "FromImage",
-            "vhd": {
-              "uri": "[concat('https', '://', parameters('storageAccounts_devopsbyexamplesstorage_name'), '.blob.core.windows.net', concat('/vhds/', parameters('virtualMachines_devops_by_examples_netcore_name'),'201682183822.vhd'))]"
-            },
-            "caching": "ReadWrite"
-          },
-          "dataDisks": [ ]
+        "storageAccounts_default_sku_tier": {
+            "type": "string",
+            "defaultValue": "Premium",
+            "allowedValues": [
+                "Standard",
+                "Premium"
+            ]
         },
-        "osProfile": {
-          "computerName": "[parameters('virtualMachines_devops_by_examples_netcore_name')]",
-          "adminUsername": "devops-by-examples-admin",
-          "linuxConfiguration": {
-            "disablePasswordAuthentication": true,
-            "ssh": {
-              "publicKeys": [
-                {
-                  "path": "/home/devops-by-examples-admin/.ssh/authorized_keys",
-                  "keyData": "[parameters('virtualMachines_devops_by_examples_netcore_ssh_public_key')]"
+        "virtualMachines_netcore_ssh_public_key": {
+            "defaultValue": null,
+            "type": "securestring"
+        },
+        "virtualMachines_netcore_adminUsername": {
+            "type": "string",
+            "minLength": 1,
+            "defaultValue": "vmadmin"
+        },
+        "virtualMachines_netcore_adminPassword": {
+            "defaultValue": null,
+            "type": "securestring"
+        },
+        "virtualMachines_netcore_vmSize": {
+            "type": "string",
+            "minLength": 1,
+            "defaultValue": "Standard_DS1_v2"
+        },
+        "serversSql_SqlServerAdminLogin": {
+            "type": "string",
+            "minLength": 1,
+            "defaultValue": "sqladmin"
+        },
+        "serversSql_SqlServerAdminLoginPassword": {
+            "type": "securestring"
+        },
+        "databaseSql_databaseName": {
+            "type": "string",
+            "minLength": 1,
+            "defaultValue": "appdb"
+        },
+        "databaseSql_databaseCollation": {
+            "type": "string",
+            "minLength": 1,
+            "defaultValue": "SQL_Latin1_General_CP1_CI_AS"
+        },
+        "databaseSql_databaseEdition": {
+            "type": "string",
+            "defaultValue": "Basic",
+            "allowedValues": [
+                "Basic",
+                "Standard",
+                "Premium"
+            ]
+        },
+        "databaseSql_databaseRequestedServiceObjectiveName": {
+            "type": "string",
+            "defaultValue": "Basic",
+            "allowedValues": [
+                "Basic",
+                "S0",
+                "S1",
+                "S2",
+                "P1",
+                "P2",
+                "P3"
+            ],
+            "metadata": {
+                "description": "Describes the performance level for Edition"
+            }
+        }
+    },
+    "resources": [
+        {
+            "comments": "Generalized from resource: '/subscriptions/9c08dcdd-9dcd-4955-9419-9c1161171463/resourceGroups/devops-by-examples-rg/providers/Microsoft.Compute/virtualMachines/devops-by-examples-netcore'.",
+            "type": "Microsoft.Compute/virtualMachines",
+            "name": "[variables('virtualMachines_netcore_name')]",
+            "apiVersion": "2015-06-15",
+            "location": "[resourceGroup().location]",
+            "properties": {
+                "hardwareProfile": {
+                    "vmSize": "[parameters('virtualMachines_netcore_vmSize')]"
+                },
+                "storageProfile": {
+                    "imageReference": {
+                        "publisher": "Canonical",
+                        "offer": "UbuntuServer",
+                        "sku": "16.04.0-LTS",
+                        "version": "latest"
+                    },
+                    "osDisk": {
+                        "name": "[variables('virtualMachines_netcore_name')]",
+                        "createOption": "FromImage",
+                        "vhd": {
+                            "uri": "[concat('https', '://', variables('storageAccounts_default_name'), '.blob.core.windows.net', concat('/vhds/', variables('virtualMachines_netcore_name'),'201682183822.vhd'))]"
+                        },
+                        "caching": "ReadWrite"
+                    },
+                    "dataDisks": []
+                },
+                "osProfile": {
+                    "computerName": "[variables('virtualMachines_netcore_name')]",
+                    "adminUsername": "[parameters('virtualMachines_netcore_adminUsername')]",
+                    "linuxConfiguration": {
+                        "disablePasswordAuthentication": true,
+                        "ssh": {
+                            "publicKeys": [
+                                {
+                                    "path": "[concat('/home/',parameters('virtualMachines_netcore_adminUsername'),'/.ssh/authorized_keys')]",
+                                    "keyData": "[parameters('virtualMachines_netcore_ssh_public_key')]"
+                                }
+                            ]
+                        }
+                    },
+                    "secrets": [],
+                    "adminPassword": "[parameters('virtualMachines_netcore_adminPassword')]"
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('networkInterfaces_n905_name'))]"
+                        }
+                    ]
                 }
-              ]
-            }
-          },
-          "secrets": [ ],
-          "adminPassword": "[parameters('virtualMachines_devops_by_examples_netcore_adminPassword')]"
+            },
+            "resources": [
+            ],
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccounts_default_name'))]",
+                "[resourceId('Microsoft.Network/networkInterfaces', variables('networkInterfaces_n905_name'))]"
+            ]
         },
-        "networkProfile": {
-          "networkInterfaces": [
-            {
-              "id": "[resourceId('Microsoft.Network/networkInterfaces', parameters('networkInterfaces_devops_by_examples_n905_name'))]"
-            }
-          ]
-        }
-      },
-      "resources": [
-           ],
-      "dependsOn": [
-        "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_devopsbyexamplesstorage_name'))]",
-        "[resourceId('Microsoft.Network/networkInterfaces', parameters('networkInterfaces_devops_by_examples_n905_name'))]"
-      ]
-    },
-    {
-      "comments": "Generalized from resource: '/subscriptions/9c08dcdd-9dcd-4955-9419-9c1161171463/resourceGroups/devops-by-examples-rg/providers/Microsoft.Network/networkInterfaces/devops-by-examples-n905'.",
-      "type": "Microsoft.Network/networkInterfaces",
-      "name": "[parameters('networkInterfaces_devops_by_examples_n905_name')]",
-      "apiVersion": "2016-03-30",
-      "location": "westeurope",
-      "properties": {
-        "ipConfigurations": [
-          {
-            "name": "ipconfig1",
+        {
+            "comments": "Generalized from resource: '/subscriptions/9c08dcdd-9dcd-4955-9419-9c1161171463/resourceGroups/devops-by-examples-rg/providers/Microsoft.Network/networkInterfaces/devops-by-examples-n905'.",
+            "type": "Microsoft.Network/networkInterfaces",
+            "name": "[variables('networkInterfaces_n905_name')]",
+            "apiVersion": "2016-03-30",
+            "location": "[resourceGroup().location]",
             "properties": {
-              "privateIPAddress": "10.0.0.4",
-              "privateIPAllocationMethod": "Dynamic",
-              "publicIPAddress": {
-                "id": "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIPAddresses_devops_by_examples_netcore_ip_name'))]"
-              },
-              "subnet": {
-                "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworks_devops_by_examples_vnet_name')), '/subnets/default')]"
-              }
-            }
-          }
-        ],
-        "dnsSettings": {
-          "dnsServers": [ ]
+                "ipConfigurations": [
+                    {
+                        "name": "ipconfig1",
+                        "properties": {
+                            "privateIPAddress": "10.0.0.4",
+                            "privateIPAllocationMethod": "Dynamic",
+                            "publicIPAddress": {
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', variables('publicIPAddresses_netcore_ip_name'))]"
+                            },
+                            "subnet": {
+                                "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', variables('virtualNetworks_vnet_name')), '/subnets/default')]"
+                            }
+                        }
+                    }
+                ],
+                "dnsSettings": {
+                    "dnsServers": []
+                },
+                "enableIPForwarding": false,
+                "networkSecurityGroup": {
+                    "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('networkSecurityGroups_netcore_nsg_name'))]"
+                }
+            },
+            "resources": [],
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/publicIPAddresses', variables('publicIPAddresses_netcore_ip_name'))]",
+                "[resourceId('Microsoft.Network/virtualNetworks', variables('virtualNetworks_vnet_name'))]",
+                "[resourceId('Microsoft.Network/networkSecurityGroups', variables('networkSecurityGroups_netcore_nsg_name'))]"
+            ]
         },
-        "enableIPForwarding": false,
-        "networkSecurityGroup": {
-          "id": "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroups_devops_by_examples_netcore_nsg_name'))]"
-        }
-      },
-      "resources": [ ],
-      "dependsOn": [
-        "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIPAddresses_devops_by_examples_netcore_ip_name'))]",
-        "[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworks_devops_by_examples_vnet_name'))]",
-        "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroups_devops_by_examples_netcore_nsg_name'))]"
-      ]
-    },
-    {
-      "comments": "Generalized from resource: '/subscriptions/9c08dcdd-9dcd-4955-9419-9c1161171463/resourceGroups/devops-by-examples-rg/providers/Microsoft.Network/networkSecurityGroups/devops-by-examples-netcore-nsg'.",
-      "type": "Microsoft.Network/networkSecurityGroups",
-      "name": "[parameters('networkSecurityGroups_devops_by_examples_netcore_nsg_name')]",
-      "apiVersion": "2016-03-30",
-      "location": "westeurope",
-      "properties": {
-        "securityRules": [
-          {
-            "name": "default-allow-ssh",
+        {
+            "comments": "Generalized from resource: '/subscriptions/9c08dcdd-9dcd-4955-9419-9c1161171463/resourceGroups/devops-by-examples-rg/providers/Microsoft.Network/networkSecurityGroups/devops-by-examples-netcore-nsg'.",
+            "type": "Microsoft.Network/networkSecurityGroups",
+            "name": "[variables('networkSecurityGroups_netcore_nsg_name')]",
+            "apiVersion": "2016-03-30",
+            "location": "[resourceGroup().location]",
             "properties": {
-              "protocol": "Tcp",
-              "sourcePortRange": "*",
-              "destinationPortRange": "22",
-              "sourceAddressPrefix": "*",
-              "destinationAddressPrefix": "*",
-              "access": "Allow",
-              "priority": 1000,
-              "direction": "Inbound"
-            }
-          },
-          {
-            "name": "Allow_HTTP_In",
-            "properties": {
-              "description": "Allow HTTP In",
-              "protocol": "Tcp",
-              "sourcePortRange": "*",
-              "destinationPortRange": "80",
-              "sourceAddressPrefix": "Internet",
-              "destinationAddressPrefix": "*",
-              "access": "Allow",
-              "priority": 101,
-              "direction": "Inbound"
-            }
-          }
-        ]
-      },
-      "resources": [ ],
-      "dependsOn": [ ]
-    },
-    {
-      "comments": "Generalized from resource: '/subscriptions/9c08dcdd-9dcd-4955-9419-9c1161171463/resourceGroups/devops-by-examples-rg/providers/Microsoft.Network/publicIPAddresses/devops-by-examples-netcore-ip'.",
-      "type": "Microsoft.Network/publicIPAddresses",
-      "name": "[parameters('publicIPAddresses_devops_by_examples_netcore_ip_name')]",
-      "apiVersion": "2016-03-30",
-      "location": "westeurope",
-      "properties": {
-        "publicIPAllocationMethod": "Dynamic",
-        "idleTimeoutInMinutes": 4,
-        "dnsSettings": {
-          "domainNameLabel": "devops-by-examples-netcore"
-        }
-      },
-      "resources": [ ],
-      "dependsOn": [ ]
-    },
-    {
-      "comments": "Generalized from resource: '/subscriptions/9c08dcdd-9dcd-4955-9419-9c1161171463/resourceGroups/devops-by-examples-rg/providers/Microsoft.Network/virtualNetworks/devops-by-examples-vnet'.",
-      "type": "Microsoft.Network/virtualNetworks",
-      "name": "[parameters('virtualNetworks_devops_by_examples_vnet_name')]",
-      "apiVersion": "2016-03-30",
-      "location": "westeurope",
-      "properties": {
-        "addressSpace": {
-          "addressPrefixes": [
-            "10.0.0.0/16"
-          ]
+                "securityRules": [
+                    {
+                        "name": "default-allow-ssh",
+                        "properties": {
+                            "protocol": "Tcp",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "22",
+                            "sourceAddressPrefix": "*",
+                            "destinationAddressPrefix": "*",
+                            "access": "Allow",
+                            "priority": 1000,
+                            "direction": "Inbound"
+                        }
+                    },
+                    {
+                        "name": "Allow_HTTP_In",
+                        "properties": {
+                            "description": "Allow HTTP In",
+                            "protocol": "Tcp",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "80",
+                            "sourceAddressPrefix": "Internet",
+                            "destinationAddressPrefix": "*",
+                            "access": "Allow",
+                            "priority": 101,
+                            "direction": "Inbound"
+                        }
+                    }
+                ]
+            },
+            "resources": [],
+            "dependsOn": []
         },
-        "subnets": [
-          {
-            "name": "default",
+        {
+            "comments": "Generalized from resource: '/subscriptions/9c08dcdd-9dcd-4955-9419-9c1161171463/resourceGroups/devops-by-examples-rg/providers/Microsoft.Network/publicIPAddresses/devops-by-examples-netcore-ip'.",
+            "type": "Microsoft.Network/publicIPAddresses",
+            "name": "[variables('publicIPAddresses_netcore_ip_name')]",
+            "apiVersion": "2016-03-30",
+            "location": "[resourceGroup().location]",
             "properties": {
-              "addressPrefix": "10.0.0.0/24"
-            }
-          }
-        ]
-      },
-      "resources": [ ],
-      "dependsOn": [ ]
-    },
-    {
-      "comments": "Generalized from resource: '/subscriptions/9c08dcdd-9dcd-4955-9419-9c1161171463/resourceGroups/devops-by-examples-rg/providers/Microsoft.Storage/storageAccounts/devopsbyexamplesstorage'.",
-      "type": "Microsoft.Storage/storageAccounts",
-      "sku": {
-        "name": "Premium_LRS",
-        "tier": "Premium"
-      },
-      "kind": "Storage",
-      "name": "[parameters('storageAccounts_devopsbyexamplesstorage_name')]",
-      "apiVersion": "2016-01-01",
-      "location": "westeurope",
-      "tags": { },
-      "properties": { },
-      "resources": [ ],
-      "dependsOn": [ ]
+                "publicIPAllocationMethod": "Dynamic",
+                "idleTimeoutInMinutes": 4,
+                "dnsSettings": {
+                    "domainNameLabel": "[variables('publicIPAddresses_netcore_domainName')]"
+                }
+            },
+            "resources": [],
+            "dependsOn": []
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/9c08dcdd-9dcd-4955-9419-9c1161171463/resourceGroups/devops-by-examples-rg/providers/Microsoft.Network/virtualNetworks/devops-by-examples-vnet'.",
+            "type": "Microsoft.Network/virtualNetworks",
+            "name": "[variables('virtualNetworks_vnet_name')]",
+            "apiVersion": "2016-03-30",
+            "location": "[resourceGroup().location]",
+            "properties": {
+                "addressSpace": {
+                    "addressPrefixes": [
+                        "10.0.0.0/16"
+                    ]
+                },
+                "subnets": [
+                    {
+                        "name": "default",
+                        "properties": {
+                            "addressPrefix": "10.0.0.0/24"
+                        }
+                    }
+                ]
+            },
+            "resources": [],
+            "dependsOn": []
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/9c08dcdd-9dcd-4955-9419-9c1161171463/resourceGroups/devops-by-examples-rg/providers/Microsoft.Storage/storageAccounts/devopsbyexamplesstorage'.",
+            "type": "Microsoft.Storage/storageAccounts",
+            "sku": {
+                "name": "[parameters('storageAccounts_default_sku_name')]",
+                "tier": "[parameters('storageAccounts_default_sku_tier')]"
+            },
+            "kind": "Storage",
+            "name": "[variables('storageAccounts_default_name')]",
+            "apiVersion": "2016-01-01",
+            "location": "[resourceGroup().location]",
+            "tags": {},
+            "properties": {},
+            "resources": [],
+            "dependsOn": []
+        },
+        {
+            "name": "[variables('serversSql_serverName')]",
+            "type": "Microsoft.Sql/servers",
+            "location": "[resourceGroup().location]",
+            "apiVersion": "2014-04-01-preview",
+            "dependsOn": [],
+            "tags": {
+                "displayName": "serversSql_serverName"
+            },
+            "properties": {
+                "administratorLogin": "[parameters('serversSql_SqlServerAdminLogin')]",
+                "administratorLoginPassword": "[parameters('serversSql_SqlServerAdminLoginPassword')]",
+                "version": "12.0"
+            },
+            "resources": [
+                {
+                    "name": "AllowAllWindowsAzureIps",
+                    "type": "firewallrules",
+                    "location": "[resourceGroup().location]",
+                    "apiVersion": "2014-04-01-preview",
+                    "dependsOn": [
+                        "[resourceId('Microsoft.Sql/servers', variables('serversSql_serverName'))]"
+                    ],
+                    "properties": {
+                        "startIpAddress": "0.0.0.0",
+                        "endIpAddress": "0.0.0.0"
+                    }
+                },
+                {
+                    "name": "[parameters('databaseSql_databaseName')]",
+                    "type": "databases",
+                    "location": "[resourceGroup().location]",
+                    "apiVersion": "2014-04-01-preview",
+                    "dependsOn": [
+                        "[resourceId('Microsoft.Sql/servers', variables('serversSql_serverName'))]"
+                    ],
+                    "tags": {
+                        "displayName": "databaseSql_database"
+                    },
+                    "properties": {
+                        "collation": "[parameters('databaseSql_databaseCollation')]",
+                        "edition": "[parameters('databaseSql_databaseEdition')]",
+                        "maxSizeBytes": "1073741824",
+                        "requestedServiceObjectiveName": "[parameters('databaseSql_databaseRequestedServiceObjectiveName')]"
+                    }
+                }
+            ]
+        }
+    ],
+    "variables": {
+        "namePrefix": "[toLower(resourceGroup().name)]",
+        "serversSql_serverName": "[concat(variables('namePrefix'), 'sql')]",
+        "storageAccounts_default_name": "[concat(variables('namePrefix'), 'store')]",
+        "publicIPAddresses_netcore_domainName": "[resourceGroup().name]",
+        "virtualMachines_netcore_name": "[concat(variables('namePrefix'), 'vm')]",
+        "networkInterfaces_n905_name": "[concat(variables('namePrefix'), 'net')]",
+        "networkSecurityGroups_netcore_nsg_name": "[concat(variables('namePrefix'), 'nsg')]",
+        "publicIPAddresses_netcore_ip_name": "[concat(variables('namePrefix'), 'ip')]",
+        "virtualNetworks_vnet_name": "[concat(variables('namePrefix'), 'vnet')]"
     }
-  ]
 }

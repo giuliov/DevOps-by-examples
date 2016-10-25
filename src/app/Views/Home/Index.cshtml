@@ -1,0 +1,60 @@
+﻿@using app.Models
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@model IEnumerable<Nation>
+@{
+    ViewData["Title"] = "DevOps by Examples";
+    bool showTimeFeatureOn = Configuration.GetValue<bool>("Features:ShowTime", false);
+}
+<h2>@ViewData["Title"]</h2>
+
+@if (showTimeFeatureOn)
+{
+    <p>Hello from our View Template!</p>
+    <p>Now, it's @DateTime.Now.ToString("R").</p>
+}
+else
+{
+    <p>Hello from our View Template!</p>
+}
+
+<form asp-controller="Home" asp-action="Index" method="post">
+    <label title="Country" />
+    <input name="searchString" type="text" />
+    <input title="Search" type="submit" />
+</form>
+
+@if (Model != null)
+{
+    <p/>
+    <table border="1" cellpadding="3">
+        <thead>
+            <tr>
+                <td><strong>ISO Code</strong></td>
+                <td><strong>English name</strong></td>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ISOCode)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EnglishName)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@{
+    var fileVersion = app.Utils.GetCustomAttribute<System.Reflection.AssemblyFileVersionAttribute>();
+    var infoVersion = app.Utils.GetCustomAttribute<System.Reflection.AssemblyInformationalVersionAttribute>();
+    string versionDisplay = $"{fileVersion.Version} ({infoVersion.InformationalVersion})";
+}
+
+<p><i>You are running version</i> @versionDisplay.</p>

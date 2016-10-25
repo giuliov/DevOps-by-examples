@@ -2,23 +2,38 @@
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "virtualMachines_devops_by_examples_netcore_name": {
-            "value": "devopbyexvm"
+        "storageAccounts_default_sku_name": {
+            "value": "Standard_LRS"
         },
-        "networkInterfaces_devops_by_examples_n905_name": {
-            "value": "devopbyexnet"
+        "storageAccounts_default_sku_tier": {
+            "value": "Standard"
         },
-        "networkSecurityGroups_devops_by_examples_netcore_nsg_name": {
-            "value": "devopbyexnsg"
+        "virtualMachines_netcore_ssh_public_key": {
+            "value": "ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEA7WMK9ErCUSJmxlz9ikvgHUQJK/WIErLcJ2BLh1KTIf02V4i1XTuUh6uxd5p1wNRG2stup7/+6GmCmveD+jbmmS4id2oAQjPBm2z3KqL3hlPxcl7LUCiE5d7W+WlyZzT8GWT40C4MBqIhPlW4IEg5cWLooV3PkGvIWjHpc9wGBAfca8VBlTjLhSC+XIfg3ak2+/aGKl3ZkOLZhU6c7SI0MoSEfz2WaI4WM686DkJqvstD4tOPk9/OV5wz+h7Rp5Dmb0X31HDjZ24bghCtM3mBYO6bKJsPUHayBg07FkTFp9URB72n9HBPp4x9T4QeZh8IiCJ5HIgXcKC/pzY4T9Dw3Q== devops-by-examples-netcore-ssh-rsa-key-20160902"
         },
-        "publicIPAddresses_devops_by_examples_netcore_ip_name": {
-            "value": "devopbyexip"
+        "virtualMachines_netcore_adminUsername": {
+            "value": "vmadmin"
         },
-        "virtualNetworks_devops_by_examples_vnet_name": {
-            "value": "devopbyexvnet"
+        "virtualMachines_netcore_adminPassword": {
+            "value": "Password.01"
         },
-        "storageAccounts_devopsbyexamplesstorage_name": {
-            "value": "devopbyexstor"
+        "virtualMachines_netcore_vmSize": {
+            "value": "Standard_DS1_v2"
+        },
+        "serversSql_SqlServerAdminLogin": {
+            "value": "sqladmin"
+        },
+        "serversSql_SqlServerAdminLoginPassword": {
+            "value": "Password.01"
+        },
+        "databaseSql_databaseName": {
+            "value": "appdb"
+        },
+        "databaseSql_databaseEdition": {
+            "value": "Basic"
+        },
+        "databaseSql_databaseRequestedServiceObjectiveName": {
+            "value": "Basic"
         }
     }
 }
