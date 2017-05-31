@@ -1,18 +1,14 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26403.7
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{151D2E53-A2C4-4D7D-83FE-D05416EBD58E}") = "ARM", "scripts\ARM\ARM.deployproj", "{A813769B-CCD6-4A37-999F-4CC958160B46}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "doc", "doc", "{FBB2E1E1-D7A0-4879-9A35-1EC6BCD28529}"
 	ProjectSection(SolutionItems) = preProject
 		..\LICENSE = ..\LICENSE
 		..\README.md = ..\README.md
 		..\doc\Research.md = ..\doc\Research.md
 	EndProjectSection
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "app", "app\app.xproj", "{0110665D-3704-4ED6-8759-7F69A9D02826}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "deploy", "deploy", "{10096667-4816-47C2-8F2E-BBB63E5C497F}"
 	ProjectSection(SolutionItems) = preProject
@@ -24,6 +20,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "data", "data", "{95CFE9A2-E
 		data\ISO_3166-2_Dataset.sql = data\ISO_3166-2_Dataset.sql
 		data\ISO_3166-2_Schema.sql = data\ISO_3166-2_Schema.sql
 	EndProjectSection
+EndProject
+Project("{151D2E53-A2C4-4D7D-83FE-D05416EBD58E}") = "ARM", "scripts\ARM\ARM.deployproj", "{A813769B-CCD6-4A37-999F-4CC958160B46}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "app", "app\app.csproj", "{0110665D-3704-4ED6-8759-7F69A9D02826}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

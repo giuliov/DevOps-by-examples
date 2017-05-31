@@ -9,6 +9,7 @@ namespace app
         public static void Main(string[] args)
         {
             var host = new WebHostBuilder()
+                .UseApplicationInsights()
                 .UseKestrel()
                 .UseUrls("http://localhost:8080")
                 .UseContentRoot(Directory.GetCurrentDirectory())
