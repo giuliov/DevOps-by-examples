@@ -10,12 +10,13 @@
     <PackageTargetFallback>$(PackageTargetFallback);dotnet5.6;portable-net45+win8</PackageTargetFallback>
     <ApplicationInsightsResourceId>/subscriptions/9c08dcdd-9dcd-4955-9419-9c1161171463/resourcegroups/devopsbyex02/providers/microsoft.insights/components/app</ApplicationInsightsResourceId>
     <ApplicationInsightsAnnotationResourceId>/subscriptions/9c08dcdd-9dcd-4955-9419-9c1161171463/resourcegroups/devopsbyex02/providers/microsoft.insights/components/app</ApplicationInsightsAnnotationResourceId>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
 
   <ItemGroup>
     <Content Update="Views\**\*;wwwroot;appsettings.*.ini;web.config">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </None>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
