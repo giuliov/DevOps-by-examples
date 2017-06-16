@@ -14,7 +14,7 @@ cat /tmp/dotnet-uninstall.log
 sudo rm /tmp/dotnet-uninstall.log
 
 echo "*** Installing .NET Core"
-sudo DEBIAN_FRONTEND=noninteractive apt-get -y install dotnet-dev-1.0.0-preview2-003121
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y install dotnet-dev-1.0.4
 
 echo "*** Install nginx as a proxy, no firewall"
 sudo DEBIAN_FRONTEND=noninteractive apt-get -y install nginx
