@@ -35,7 +35,7 @@ namespace app.Controllers
             {
                 conn.Open();
 
-                string sql = "SELECT Code,Name FROM ISO_3166_2 WHERE Name LIKE @searchString";
+                string sql = "SELECT Alpha2,Name FROM ISO_3166_2 WHERE Name LIKE @searchString";
                 using (var cmd = new SqlCommand(sql,conn))
                 {
                     searchString = searchString ?? string.Empty;
