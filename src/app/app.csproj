@@ -10,7 +10,6 @@
     <PackageTargetFallback>$(PackageTargetFallback);dotnet5.6;portable-net45+win8</PackageTargetFallback>
     <ApplicationInsightsResourceId>/subscriptions/9c08dcdd-9dcd-4955-9419-9c1161171463/resourcegroups/devopsbyex02/providers/microsoft.insights/components/app</ApplicationInsightsResourceId>
     <ApplicationInsightsAnnotationResourceId>/subscriptions/9c08dcdd-9dcd-4955-9419-9c1161171463/resourcegroups/devopsbyex02/providers/microsoft.insights/components/app</ApplicationInsightsAnnotationResourceId>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
 
   <ItemGroup>
@@ -21,7 +20,7 @@
 
   <ItemGroup>
     <PackageReference Include="LaunchDarkly.Client" Version="3.3.2" />
-    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.0.0" />
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.1.1" />
     <PackageReference Include="Microsoft.NETCore.App" Version="1.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics" Version="1.0.2" />
     <PackageReference Include="Microsoft.AspNetCore.Server.IISIntegration" Version="1.0.2" />
@@ -48,6 +47,10 @@
     <None Update="appsettings.Production.ini">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services" />
   </ItemGroup>
 
 </Project>

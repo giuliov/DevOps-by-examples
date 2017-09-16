@@ -32,9 +32,9 @@ else
             <tr>
 @if (Model.ExtendedCountriesDisplayFeatureOn)
 {
+                    <td><strong>English name</strong></td>
                     <td><strong>Alpha Code (2)</strong></td>
                     <td><strong>Alpha Code (3)</strong></td>
-                    <td><strong>English name</strong></td>
                     <td><strong>Numeric Code</strong></td>
 }
 else
@@ -48,22 +48,28 @@ else
             @foreach (var item in Model.Nations)
             {
                 <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Alpha2)
-                    </td>
 @if (Model.ExtendedCountriesDisplayFeatureOn)
 {
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Alpha3)
-                    </td>
-}
                     <td>
                         @Html.DisplayFor(modelItem => item.EnglishName)
                     </td>
-@if (Model.ExtendedCountriesDisplayFeatureOn)
-{
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Alpha3)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Alpha2)
+                    </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Numeric)
+                    </td>
+}
+else
+{
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Alpha2)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EnglishName)
                     </td>
 }
                 </tr>

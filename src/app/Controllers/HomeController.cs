@@ -1,6 +1,7 @@
 ﻿using app.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Microsoft.ApplicationInsights;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
@@ -12,10 +13,12 @@ namespace app.Controllers
     public class HomeController : Controller
     {
         private IConfiguration Configuration { get; set; }
+        private TelemetryClient TelemetryClient { get; set; }
 
         public HomeController(IConfiguration configuration)
         {
             Configuration = configuration;
+            TelemetryClient = new TelemetryClient();
         }
 
         private NationsViewModel MakeNationsViewModel()
@@ -46,6 +49,8 @@ namespace app.Controllers
             var vm = MakeNationsViewModel();
             vm.Nations = new List<Nation>();
 
+            TrackUserQuery(searchString);
+
             string connectionString = Configuration.GetValue<string>("Data:ConnectionString");
             using (var conn = new SqlConnection(connectionString))
             {
@@ -55,7 +60,7 @@ namespace app.Controllers
                     ? "SELECT Alpha2,Name,Alpha3,Numeric FROM ISO_3166_2 WHERE Name LIKE @searchString"
                     : "SELECT Alpha2,Name FROM ISO_3166_2 WHERE Name LIKE @searchString";
 
-                using (var cmd = new SqlCommand(sql,conn))
+                using (var cmd = new SqlCommand(sql, conn))
                 {
                     searchString = searchString ?? string.Empty;
                     cmd.Parameters.AddWithValue("searchString", searchString + "%");
@@ -87,6 +92,17 @@ namespace app.Controllers
             }
 
             return View(vm);
+        }
+
+        private void TrackUserQuery(string searchString)
+        {
+            if (searchString.Length > 2)
+            {
+                TelemetryClient.TrackEvent("Longer user query",
+                    new Dictionary<string, string> {
+                        { "QueryLength", searchString.Length.ToString() } // TIP: no blanks in key
+                    });
+            }
         }
     }
 }
