@@ -335,5 +335,11 @@
         "networkSecurityGroups_netcore_nsg_name": "[concat(variables('namePrefix'), 'nsg')]",
         "publicIPAddresses_netcore_ip_name": "[concat(variables('namePrefix'), 'ip')]",
         "virtualNetworks_vnet_name": "[concat(variables('namePrefix'), 'vnet')]"
+    },
+    "outputs": {
+      "dns_netcore": {
+        "type": "string",
+        "value": "[reference(variables('publicIPAddresses_netcore_ip_name')).dnsSettings.fqdn]"
+      }
     }
 }

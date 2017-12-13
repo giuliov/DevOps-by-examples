@@ -1,0 +1,45 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "virtualMachines_devopsbyex02vm_name": {
+            "value": null
+        },
+        "alertrules_Failure_Anomalies___app_name": {
+            "value": null
+        },
+        "components_app_name": {
+            "value": null
+        },
+        "networkInterfaces_devopsbyex02net_name": {
+            "value": null
+        },
+        "networkSecurityGroups_devopsbyex02nsg_name": {
+            "value": null
+        },
+        "publicIPAddresses_devopsbyex02ip_name": {
+            "value": null
+        },
+        "virtualNetworks_devopsbyex02vnet_name": {
+            "value": null
+        },
+        "servers_devopsbyex02sql_name": {
+            "value": null
+        },
+        "storageAccounts_devopsbyex02store_name": {
+            "value": null
+        },
+        "databases_appdb_name": {
+            "value": null
+        },
+        "databases_master_name": {
+            "value": null
+        },
+        "firewallRules_AllowAllWindowsAzureIps_name": {
+            "value": null
+        },
+        "firewallRules_vm_name": {
+            "value": null
+        }
+    }
+}

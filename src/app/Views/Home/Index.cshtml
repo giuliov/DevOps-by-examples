@@ -2,14 +2,13 @@
 @using Microsoft.Extensions.Configuration
 @inject IConfiguration Configuration
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
-@model IEnumerable<Nation>
+@model NationsViewModel
 @{
     ViewData["Title"] = "DevOps by Examples";
-    bool showTimeFeatureOn = Configuration.GetValue<bool>("Features:ShowTime", false);
 }
 <h2>@ViewData["Title"]</h2>
 
-@if (showTimeFeatureOn)
+@if (Model.ShowTimeFeatureOn)
 {
     <p>Hello from our View Template!</p>
     <p>Now, it's @DateTime.Now.ToString("R").</p>
@@ -25,26 +24,54 @@ else
     <input title="Search" type="submit" />
 </form>
 
-@if (Model != null)
+@if (Model.Nations != null)
 {
     <p/>
     <table border="1" cellpadding="3">
         <thead>
             <tr>
-                <td><strong>ISO Code</strong></td>
-                <td><strong>English name</strong></td>
+@if (Model.ExtendedCountriesDisplayFeatureOn)
+{
+                    <td><strong>English name</strong></td>
+                    <td><strong>Alpha Code (2)</strong></td>
+                    <td><strong>Alpha Code (3)</strong></td>
+                    <td><strong>Numeric Code</strong></td>
+}
+else
+{
+                    <td><strong>ISO Code</strong></td>
+                    <td><strong>English name</strong></td>
+}
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in Model)
+            @foreach (var item in Model.Nations)
             {
                 <tr>
+@if (Model.ExtendedCountriesDisplayFeatureOn)
+{
                     <td>
-                        @Html.DisplayFor(modelItem => item.ISOCode)
+                        @Html.DisplayFor(modelItem => item.EnglishName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Alpha3)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Alpha2)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Numeric)
+                    </td>
+}
+else
+{
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Alpha2)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.EnglishName)
                     </td>
+}
                 </tr>
             }
         </tbody>
